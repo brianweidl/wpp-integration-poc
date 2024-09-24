@@ -11,7 +11,9 @@ async function sendTemplateMessage(req: Request) {
 
   phoneNumberId = phoneNumberId ?? DEFAULT_PHONE_NUMBER_ID;
 
-  const url = `https://graph.facebook.com/v20.0/${DEFAULT_PHONE_NUMBER_ID}/messages`;
+  console.log("Phone Number ID:", phoneNumberId);
+
+  const url = `https://graph.facebook.com/v20.0/${phoneNumberId}/messages`;
 
   const headers = {
     "Content-Type": "application/json",
@@ -26,7 +28,7 @@ async function sendTemplateMessage(req: Request) {
     template: {
       name: "hello_world",
       language: {
-        code: "en",
+        code: "en_US",
       },
     },
   };
@@ -55,7 +57,7 @@ async function sendWppMessage(req: Request) {
 
   phoneNumberId = phoneNumberId ?? DEFAULT_PHONE_NUMBER_ID;
 
-  const url = `https://graph.facebook.com/v20.0/${DEFAULT_PHONE_NUMBER_ID}/messages`;
+  const url = `https://graph.facebook.com/v20.0/${phoneNumberId}/messages`;
 
   const headers = {
     "Content-Type": "application/json",
@@ -244,6 +246,10 @@ async function handleRequest(req: Request) {
   if (req.method === "GET") {
     if (url.pathname === "/webhook") {
       return verifyWebhook(req);
+    }
+
+    if (url.pathname === "/media") {
+      return new Response(Bun.file("sample-9s.mp3"));
     }
   }
 
